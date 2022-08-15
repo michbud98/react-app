@@ -1,5 +1,7 @@
 name: CI
 on:
+  push: 
+    branches: [develop]
   pull_request:
     branches: [develop]
 
@@ -13,7 +15,19 @@ jobs:
         with:
           node-version: "12.x"
       - run: npm ci # similar as npm install but for CI
-      - run: npm run format:check
-      - run: npm test -- --coverage
+      - name: Test formatting with prettier
+        run: npm run format:check
+      - name: Create test coverage
+        run: npm test -- --coverage
         env:
           CI: true
+      - name: Build Project
+        if: github.event_name == "push"
+        run: npm run build
+      # - name: Deploy to Staging
+      #   if: github.event_name == "push"
+      #   run: npx surge --project ./build --domain <domain name> # Domain created from local pc. Can find using surge list
+        # env:
+        #   SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }} # Surge email can find using surge whoami
+        #   SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }} # Generate using surge token on local machine
+
