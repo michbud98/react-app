@@ -24,10 +24,10 @@ jobs:
       - name: Build Project
         if: github.event_name == 'push'
         run: npm run build
-      # - name: Deploy to Staging
-      #   if: github.event_name == 'push'
-      #   run: npx surge --project ./build --domain <domain name> # Domain created from local pc. Can find using surge list
-        # env:
-        #   SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }} # Surge email can find using surge whoami
-        #   SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }} # Generate using surge token on local machine
+      - name: Deploy to Staging
+        if: github.event_name == 'push'
+        run: npx surge --project ./build --domain clean-eye.surge.sh # Domain created from local pc. Can find using surge list
+        env:
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }} # Surge email can find using surge whoami
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }} # Generate using surge token on local machine
 
