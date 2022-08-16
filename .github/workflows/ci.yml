@@ -23,6 +23,7 @@ jobs:
           node-version: "16.x"
       - run: npm ci # similar as npm install but for CI
       - name: Test formatting with prettier
+        #continue-on-error: true
         run: npm run format:check
       - name: Create test coverage
         run: npm test -- --coverage
@@ -42,6 +43,11 @@ jobs:
         with:
           name: build
           path: build
+      - name: ZIP Assets
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: |
+          zip -r build.zip ./build
+          zip -r coverage.zip ./coverage
       - name: Create a Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: npx semantic-release
