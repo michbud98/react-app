@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }} # Surge email can find using surge whoami
+      SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }} # Generate using surge token on local machine
     steps:
       - uses: actions/checkout@v2
       - name: Cashe node modules
@@ -53,10 +56,13 @@ jobs:
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Deploy to Staging
-        if: github.event_name == 'push'
+      - name: Deploy to Staging # uses SURGE_LOGIN and SURGE_TOKEN
+        if: github.event_name == 'push' #&& github.ref == 'refs/heads/develop' if we want to deploy only on pushing to develop branch
         run: npx surge --project ./build --domain clean-eye.surge.sh # Domain created from local pc. Can find using surge list
-        env:
-          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }} # Surge email can find using surge whoami
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }} # Generate using surge token on local machine
+
+      # Same will be done if we want to deploy to production only if condition is different
+      # - name: Deploy to Production
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+      #   run: npx surge --project ./build --domain clean-eye.surge.sh # Domain created from local pc. Can find using surge list
+        
 
