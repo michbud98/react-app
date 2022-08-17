@@ -10,6 +10,6 @@ jobs:
       pull-requests: write
     steps:
     - uses: hmarr/auto-approve-action@v2
-      if: github.actor == 'michbud98' #michbud98 a mbudik-cen66499
+      if: github.actor == 'mbudik-cen66499' #michbud98 a mbudik-cen66499
       with:
         github-token: ${{ secrets.AUTOAPPROVE_KEY }}
