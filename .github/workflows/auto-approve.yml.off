@@ -1,0 +1,26 @@
+name: Auto approve
+
+on:
+  pull_request
+
+jobs:
+  auto-approve:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+    - uses: hmarr/auto-approve-action@v2
+      if: github.actor == 'user' # Select user for which u want to merge commits (usually used for bots)
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }} # If CODEOWNERS IS USED this must be replaced by personal acces token of any codeowner (for that, we can create bot account)
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - id: automerge
+        if: ${{ github.actor == 'user' }} 
+        name: Automerge release
+        uses: "pascalgn/automerge-action@v0.15.3"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_METHOD: "merge"
+          MERGE_LABELS: "" # if empty string "" merges all pull requests
