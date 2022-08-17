@@ -1,0 +1,21 @@
+name: Automerge release
+on:
+  pull_request:
+    branches:
+      - master
+    types: [ labeled, unlabeled ]
+  check_suite:
+    types:
+      - completed
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - id: automerge
+        if: ${{ github.actor == 'mbudik-cen66499' }}
+        name: Automerge release
+        uses: "pascalgn/automerge-action@v0.15.3"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "autorelease: pending"
+          MERGE_METHOD: "merge"
