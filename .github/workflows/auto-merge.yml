@@ -1,8 +1,7 @@
 name: Automerge release
 on:
   pull_request:
-    branches:
-      - master
+    branches: [master, develop]
     types: [ labeled, unlabeled ]
   check_suite:
     types:
