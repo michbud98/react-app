@@ -13,3 +13,14 @@ jobs:
       if: github.actor == 'mbudik-cen66499' #michbud98 a mbudik-cen66499
       with:
         github-token: ${{ secrets.AUTOAPPROVE_KEY }}
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - id: automerge
+        if: ${{ github.actor == 'mbudik-cen66499' }}
+        name: Automerge release
+        uses: "pascalgn/automerge-action@v0.15.3"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_METHOD: "merge"
+          MERGE_LABELS: ""
